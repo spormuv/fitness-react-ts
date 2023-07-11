@@ -22,7 +22,7 @@ const Benefit = ({ setSelectedPage, icon, title, description }: Props) => {
     >
       <div className=" mb-4 flex justify-center">
         <div className="rounded-full border-2 border-gray-100 bg-primary-100 p-4">
-          {}
+          {icon}
         </div>
       </div>
 
