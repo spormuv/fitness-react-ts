@@ -1,11 +1,8 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-
 import ContactUsPageGraphic from '@/assets/ContactUsPageGraphic.png';
 import HText from '@/shared/HText';
 import { SelectedPage } from '@/shared/types';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
-import { FieldErrors, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 type Props = {
   setSelectedPage: (value: SelectedPage) => void;
@@ -24,18 +21,26 @@ const ContactUs = ({ setSelectedPage }: Props) => {
   const {
     trigger,
     register,
-    handleSubmit,
     reset,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
   } = useForm<FormValues>({
     mode: 'onBlur',
   });
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    const isValid = await trigger();
-    if (!isValid) {
-      e.preventDefault();
-    }
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    trigger()
+      .then(isValid => {
+        if (!isValid) {
+          e.preventDefault();
+        } else {
+          setTimeout(() => {
+            reset();
+          }, 500);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
   return (
